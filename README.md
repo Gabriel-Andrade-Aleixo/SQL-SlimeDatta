@@ -2,8 +2,6 @@
 
 No universo de "Slime Datta Ken", é necessário um sistema de banco de dados para gerenciar as diversas entidades e suas relações. O sistema visa organizar informações sobre os personagens, habilidades, itens, locais e eventos, fundamentais para a administração do mundo em que vivem. As entidades principais são:
 
-Um personagem possui várias habilidades, vários itens, participa de muitos e ventos e ja esteve em muitos locais
-
 Personagem: representa cada ser vivo, contendo atributos como nome, idade, raça e habilidades.
 
 Habilidade: habilidades ou poderes que um personagem pode possuir, incluindo nome, tipo e nível de poder.
@@ -22,68 +20,82 @@ Evento: eventos importantes que ocorrem no universo, com atributos como nome, da
 
 # 4 - Modelagem Física
 ```sql
-CREATE TABLE Personagem (
-  id_personagem INT PRIMARY KEY,
-  nome VARCHAR(100),
-  data_nascimento DATE,
-  idade INT GENERATED ALWAYS AS (YEAR(CURDATE()) - YEAR(data_nascimento)) STORED,
-  raca VARCHAR(100)
+CREATE DATABASE SlimeDatta;
+USE SlimeDatta;
+
+CREATE TABLE personagem (
+  id_personagem      INT             IDENTITY    PRIMARY KEY,
+  nome               VARCHAR(100),
+  data_nascimento    DATE,
+  raca               VARCHAR(100),
+  idade              AS DATEDIFF(YEAR, data_nascimento, GETDATE())
 );
 
-CREATE TABLE Habilidade (
-  id_habilidade INT PRIMARY KEY,
-  nome VARCHAR(100),
-  tipo VARCHAR(100),
-  nivel_poder INT
+CREATE TABLE habilidade (
+  id_habilidade      INT             IDENTITY    PRIMARY KEY,
+  nome               VARCHAR(40),
+  tipo               VARCHAR(20),
+  nivel_poder        INT
 );
 
-CREATE TABLE Item (
-  id_item INT PRIMARY KEY,
-  nome VARCHAR(100),
-  tipo VARCHAR(100),
-  efeito VARCHAR(255)
+CREATE TABLE item (
+  id_item            INT             IDENTITY    PRIMARY KEY,
+  nome               VARCHAR(40),
+  tipo               VARCHAR(20),
+  efeito             VARCHAR(60)
 );
 
-CREATE TABLE Local (
-  id_local INT PRIMARY KEY,
-  nome VARCHAR(100),
-  tipo VARCHAR(100),
-  descricao VARCHAR(255)
+CREATE TABLE local (
+  id_local           INT             IDENTITY    PRIMARY KEY,
+  nome               VARCHAR(40),
+  tipo               VARCHAR(20),
+  descricao          VARCHAR(60)
 );
 
-CREATE TABLE Evento (
-  id_evento INT PRIMARY KEY,
-  nome VARCHAR(100),
-  data DATE,
-  descricao VARCHAR(255)
+CREATE TABLE evento (
+  id_evento          INT             IDENTITY    PRIMARY KEY,
+  nome               VARCHAR(40),
+  data               DATE,
+  descricao          VARCHAR(60)
 );
 
-CREATE TABLE Personagem_Habilidade (
-  id_personagem INT,
-  id_habilidade INT,
-  FOREIGN KEY (id_personagem) REFERENCES Personagem(id_personagem),
-  FOREIGN KEY (id_habilidade) REFERENCES Habilidade(id_habilidade)
+CREATE TABLE email (
+  id_email           INT             IDENTITY    PRIMARY KEY,
+  id_personagem      INT,
+  endereco_email     VARCHAR(255),
+  FOREIGN KEY (id_personagem) REFERENCES personagem(id_personagem)
 );
 
-CREATE TABLE Personagem_Item (
-  id_personagem INT,
-  id_item INT,
-  FOREIGN KEY (id_personagem) REFERENCES Personagem(id_personagem),
-  FOREIGN KEY (id_item) REFERENCES Item(id_item)
+CREATE TABLE possui (
+  id_personagem      INT,
+  id_habilidade      INT,
+  PRIMARY KEY (id_personagem, id_habilidade),
+  FOREIGN KEY (id_personagem) REFERENCES personagem(id_personagem),
+  FOREIGN KEY (id_habilidade) REFERENCES habilidade(id_habilidade)
 );
 
-CREATE TABLE Personagem_Local (
-  id_personagem INT,
-  id_local INT,
-  FOREIGN KEY (id_personagem) REFERENCES Personagem(id_personagem),
-  FOREIGN KEY (id_local) REFERENCES Local(id_local)
+CREATE TABLE usa (
+  id_personagem      INT,
+  id_item            INT,
+  PRIMARY KEY (id_personagem, id_item),
+  FOREIGN KEY (id_personagem) REFERENCES personagem(id_personagem),
+  FOREIGN KEY (id_item) REFERENCES item(id_item)
 );
 
-CREATE TABLE Personagem_Evento (
-  id_personagem INT,
-  id_evento INT,
-  FOREIGN KEY (id_personagem) REFERENCES Personagem(id_personagem),
-  FOREIGN KEY (id_evento) REFERENCES Evento(id_evento)
+CREATE TABLE esteve (
+  id_personagem      INT,
+  id_local           INT,
+  PRIMARY KEY (id_personagem, id_local),
+  FOREIGN KEY (id_personagem) REFERENCES personagem(id_personagem),
+  FOREIGN KEY (id_local) REFERENCES local(id_local)
+);
+
+CREATE TABLE participa (
+  id_personagem      INT,
+  id_evento          INT,
+  PRIMARY KEY (id_personagem, id_evento),
+  FOREIGN KEY (id_personagem) REFERENCES personagem(id_personagem),
+  FOREIGN KEY (id_evento) REFERENCES evento(id_evento)
 );
 ```
 
@@ -120,7 +132,7 @@ INSERT INTO Habilidade (id_habilidade, nome, tipo, nivel_poder) VALUES
 (4, 'Megiddo', 'Ataque', 10),
 (5, 'Clairvoyance', 'Suporte', 7),
 (6, 'Dragon Power', 'Ataque', 10),
-(7, 'Demon Lord\'s Haki', 'Ataque', 9),
+(7, 'Demon Lord\s Haki', 'Ataque', 9),
 (8, 'Healing', 'Suporte', 6),
 (9, 'Water Blade', 'Ataque', 7),
 (10, 'Shadow Motion', 'Ataque', 8);
@@ -165,7 +177,7 @@ INSERT INTO Evento (id_evento, nome, data, descricao) VALUES
 (10, 'Derrota de Hinata', '2021-11-11', 'Batalha e derrota de Hinata Sakaguchi');
 
 -- Inserindo dados na tabela Personagem_Habilidade
-INSERT INTO Personagem_Habilidade (id_personagem, id_habilidade) VALUES
+INSERT INTO possui(id_personagem, id_habilidade) VALUES
 (1, 1),
 (1, 2),
 (2, 2),
@@ -189,7 +201,7 @@ INSERT INTO Personagem_Habilidade (id_personagem, id_habilidade) VALUES
 (20, 1);
 
 -- Inserindo dados na tabela Personagem_Item
-INSERT INTO Personagem_Item (id_personagem, id_item) VALUES
+INSERT INTO usa (id_personagem, id_item) VALUES
 (1, 1),
 (1, 2),
 (2, 1),
@@ -213,7 +225,7 @@ INSERT INTO Personagem_Item (id_personagem, id_item) VALUES
 (20, 10);
 
 -- Inserindo dados na tabela Personagem_Local
-INSERT INTO Personagem_Local (id_personagem, id_local) VALUES
+INSERT INTO esteve (id_personagem, id_local) VALUES
 (1, 1),
 (1, 2),
 (2, 2),
@@ -237,7 +249,7 @@ INSERT INTO Personagem_Local (id_personagem, id_local) VALUES
 (20, 10);
 
 -- Inserindo dados na tabela Personagem_Evento
-INSERT INTO Personagem_Evento (id_personagem, id_evento) VALUES
+INSERT INTO participa (id_personagem, id_evento) VALUES
 (1, 1),
 (1, 2),
 (2, 2),
@@ -259,25 +271,230 @@ INSERT INTO Personagem_Evento (id_personagem, id_evento) VALUES
 (18, 8),
 (19, 9),
 (20, 10);
+
+-- Inserindo e-mails na tabela Email
+INSERT INTO email (id_personagem, endereco_email) VALUES
+(1, 'rimuru.tempest@example.com'),
+(1, 'rimuru.tempest@tempestcity.com'),
+(2, 'shizu@example.com'),
+(2, 'shizu@florestajura.com'),
+(3, 'benimaru@example.com'),
+(3, 'benimaru@oni.com'),
+(4, 'shion@example.com'),
+(4, 'shion@oni.com'),
+(5, 'gobta@example.com'),
+(5, 'gobta@goblin.com'),
+(6, 'ranga@example.com'),
+(6, 'ranga@lobotempest.com'),
+(7, 'souei@example.com'),
+(7, 'souei@oni.com'),
+(8, 'hakurou@example.com'),
+(8, 'hakurou@oni.com'),
+(9, 'milim.nava@example.com'),
+(9, 'milim.nava@dragonoid.com'),
+(10, 'diablo@example.com'),
+(10, 'diablo@demon.com'),
+(11, 'geld@example.com'),
+(11, 'geld@orc.com'),
+(12, 'treyni@example.com'),
+(12, 'treyni@dryad.com'),
+(13, 'garm@example.com'),
+(13, 'garm@dwarf.com'),
+(14, 'kaijin@example.com'),
+(14, 'kaijin@dwarf.com'),
+(15, 'vesta@example.com'),
+(15, 'vesta@dwarf.com'),
+(16, 'rigurd@example.com'),
+(16, 'rigurd@goblin.com'),
+(17, 'beretta@example.com'),
+(17, 'beretta@homunculo.com'),
+(18, 'gabil@example.com'),
+(18, 'gabil@dragonewt.com'),
+(19, 'albis@example.com'),
+(19, 'albis@snake.com'),
+(20, 'phobio@example.com'),
+(20, 'phobio@beastman.com');
+
+-- Outra rodada de e-mails
+INSERT INTO email (id_personagem, endereco_email) VALUES
+(1, 'rimuru.alt@example.com'),
+(2, 'shizu.alt@example.com'),
+(3, 'benimaru.alt@example.com'),
+(4, 'shion.alt@example.com'),
+(5, 'gobta.alt@example.com'),
+(6, 'ranga.alt@example.com'),
+(7, 'souei.alt@example.com'),
+(8, 'hakurou.alt@example.com'),
+(9, 'milim.nava.alt@example.com'),
+(10, 'diablo.alt@example.com'),
+(11, 'geld.alt@example.com'),
+(12, 'treyni.alt@example.com'),
+(13, 'garm.alt@example.com'),
+(14, 'kaijin.alt@example.com'),
+(15, 'vesta.alt@example.com'),
+(16, 'rigurd.alt@example.com'),
+(17, 'beretta.alt@example.com'),
+(18, 'gabil.alt@example.com'),
+(19, 'albis.alt@example.com'),
+(20, 'phobio.alt@example.com');
 ```
 
 # 6 - CRUD
-### Create
+### 1. Inserção de Dados
+### Inserir um novo personagem:
+
 ```sql
-INSERT INTO Personagem (id_personagem, nome, data_nascimento, raca) VALUES (3, 'Benimaru', '1998-02-14', 'Oni');
+INSERT INTO personagem (nome, data_nascimento, raca) VALUES
+('Gobuta', '2000-01-01', 'Lobo');
 ```
 
-### Read
+### Inserir uma nova habilidade:
 ```sql
-SELECT * FROM Personagem WHERE nome = 'Rimuru Tempest';
+INSERT INTO habilidade (nome, tipo, nivel_poder) VALUES
+('Gula', 'Defesa', 5);
 ```
 
-### Update
+### Inserir um novo item:
 ```sql
-UPDATE Personagem SET raca = 'Demônio' WHERE nome = 'Rimuru Tempest';
+INSERT INTO item (nome, tipo, efeito) VALUES
+('Espada do Heroi', 'Ataque', 'Ao acertar um atk a ambos no duelo morrem');
 ```
 
-### Delete
+### 2. Leitura de Dados Inserção
+### Selecionar todos os personagens:
 ```sql
-DELETE FROM Personagem WHERE nome = 'Shizu';
+SELECT * FROM personagem
+SELECT * FROM habilidade
+SELECT * FROM item
 ```
+<img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+
+### 3. Atualização de Dados
+### Atualizar a raça de um personagem:
+```sql
+UPDATE personagem
+SET raca = 'Goblin'
+WHERE nome = 'Gobuta';
+```
+
+### 4. Leitura de Dados Atualização
+### Selecionar todos os personagens:
+```sql
+SELECT * FROM personagem
+WHERE nome = 'Gobuta';
+```
+<img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+
+### 5. Deleção de Dados
+### Excluir um personagem:
+```sql
+DELETE FROM personagem
+WHERE nome = 'Gobuta';
+```
+
+### 6. Leitura de Dados Deleção
+### Selecionar todos os personagens:
+```sql
+SELECT * FROM personagem;
+```
+<img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+
+
+## 7 - Relatórios
+
+### 1. Consulta com Junção entre Personagem e Habilidade
+Descrição: Esta consulta retorna todos os personagens junto com suas habilidades correspondentes.
+```sql
+SELECT p.nome AS Personagem, h.nome AS Habilidade
+FROM personagem p
+JOIN possui ph ON p.id_personagem = ph.id_personagem
+JOIN habilidade h ON ph.id_habilidade = h.id_habilidade;
+```
+
+### 2. Consulta com Filtro em Personagem e Item
+Descrição: Esta consulta retorna todos os personagens que possuem itens do tipo 'Ataque'.
+```sql
+SELECT p.nome AS Personagem, i.nome AS Item
+FROM personagem p
+JOIN usa pi ON p.id_personagem = pi.id_personagem
+JOIN item i ON pi.id_item = i.id_item
+WHERE i.tipo = 'Ataque';
+```
+<img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+
+### 3. Consulta com Ordenação em Personagem e Evento
+Descrição: Esta consulta retorna todos os eventos e os personagens que participaram, ordenados pela data do evento.
+```sql
+SELECT e.nome AS Evento, p.nome AS Personagem
+FROM evento e
+JOIN participa pe ON e.id_evento = pe.id_evento
+JOIN personagem p ON pe.id_personagem = p.id_personagem
+ORDER BY e.data;
+```
+<img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+
+### 4. Consulta de Personagem com Mais de Uma Habilidade
+Descrição: Esta consulta retorna os personagens que possuem mais de uma habilidade.
+```sql
+SELECT p.nome AS Personagem, COUNT(ph.id_habilidade) AS NumeroDeHabilidades
+FROM personagem p
+JOIN possui ph ON p.id_personagem = ph.id_personagem
+GROUP BY p.nome
+HAVING COUNT(ph.id_habilidade) > 1;
+```
+<img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+
+### 5. Consulta de Personagens com Data de Nascimento Filtrada
+Descrição: Esta consulta retorna os personagens que nasceram antes do ano 1900.
+```sql
+SELECT nome, data_nascimento
+FROM personagem
+WHERE data_nascimento < '1900-01-01';
+```
+<img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+
+### 6. Consulta de Habilidades com Nível de Poder Maior que 4
+Descrição: Esta consulta retorna habilidades cujo nível de poder é maior que 4.
+```sql
+SELECT nome, tipo, nivel_poder
+FROM habilidade
+WHERE nivel_poder > 4;
+```
+<img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+
+### 7. Consulta de Itens com Tipo Específico
+Descrição: Esta consulta retorna itens do tipo 'Cura'.
+```sql
+SELECT nome, tipo, efeito
+FROM item
+WHERE tipo = 'Cura';
+```
+<img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+
+### 8. Consulta de Personagem e Locais Visitados
+Descrição: Esta consulta retorna todos os locais visitados por cada personagem.
+```sql
+SELECT l.nome AS Local, p.nome AS Personagem
+FROM local l
+JOIN esteve pl ON l.id_local = pl.id_local
+JOIN personagem p ON pl.id_personagem = p.id_personagem;
+```
+<img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+
+### 9. Consulta de Eventos em um Intervalo de Data
+Descrição: Esta consulta retorna eventos que ocorreram entre 2020 e 2021.
+```sql
+SELECT nome, data, descricao
+FROM evento
+WHERE data BETWEEN '2020-01-01' AND '2021-12-31';
+```
+<img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+
+### 10. Consulta de E-mails Associados a Personagens
+Descrição: Esta consulta retorna todos os personagens e seus e-mails associados.
+```sql
+SELECT p.nome AS Personagem, e.endereco_email AS Email
+FROM personagem p
+JOIN email e ON p.id_personagem = e.id_personagem;
+```
+<img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
