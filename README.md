@@ -2,6 +2,7 @@
 
 No universo de "Slime Datta Ken", é necessário um sistema de banco de dados para gerenciar as diversas entidades e suas relações. O sistema visa organizar informações sobre os personagens, habilidades, itens, locais e eventos, fundamentais para a administração do mundo em que vivem. As entidades principais são:
 
+Um personagem possui várias habilidades, vários itens, participa de muitos e ventos e ja esteve em muitos locais
 
 Personagem: representa cada ser vivo, contendo atributos como nome, idade, raça e habilidades.
 
