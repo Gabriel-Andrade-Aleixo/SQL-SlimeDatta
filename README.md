@@ -15,10 +15,10 @@ Local: locais dentro do universo, como cidades, florestas e masmorras, com atrib
 Evento: eventos importantes que ocorrem no universo, com atributos como nome, data e descrição.
 
 # 2 - Modelagem Conceitual
-<img src="./ConceitualSlimeDatta.jpeg" width="100%" />
+<img src="./ConceitualSlimeDatta.png" width="100%" />
 
 # 3 - Modelagem Lógica
-<img src="./LógicoSlimeDatta.jpeg" width="100%" />
+<img src="./LógicoSlimeDatta.png" width="100%" />
 
 # 4 - Modelagem Física
 ```sql
