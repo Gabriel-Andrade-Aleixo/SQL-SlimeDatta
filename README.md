@@ -26,7 +26,7 @@ CREATE TABLE casa (
 ```
 
 ### Criação da tabela `personagem`
-```slq
+```sql
 CREATE TABLE personagem (
   id_personagem      INT             IDENTITY    PRIMARY KEY,
   nome               VARCHAR(100),
@@ -518,7 +518,7 @@ INSERT INTO esteve (id_personagem, id_local) VALUES
 (20, 20);
 ```
 
-### Inserção de dados na tabela `partivipa`
+### Inserção de dados na tabela `participa`
 ```sql
 INSERT INTO participa (id_personagem, id_evento) VALUES
 (1, 1),
