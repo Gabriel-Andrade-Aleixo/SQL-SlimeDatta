@@ -9,17 +9,24 @@
 <img src="./imagens/LógicoSlimeDatta.png" width="100%" />
 
 # 4 - Modelagem Física
+### Criação do banco `SlimeDatta`
 ```sql
 CREATE DATABASE SlimeDatta;
 USE SlimeDatta;
+```
 
+### Criação da tabela `casa`
+```sql
 CREATE TABLE casa (
   id_casa            INT             IDENTITY	 PRIMARY KEY,
   numero             INT			 NOT NULL,
   bairro             VARCHAR(40),
   rua                VARCHAR(60)
 );
+```
 
+### Criação da tabela `personagem`
+```slq
 CREATE TABLE personagem (
   id_personagem      INT             IDENTITY    PRIMARY KEY,
   nome               VARCHAR(100),
@@ -28,49 +35,70 @@ CREATE TABLE personagem (
   id_casa            INT			 FOREIGN KEY REFERENCES casa(id_casa),
   idade              AS DATEDIFF(YEAR, data_nascimento, GETDATE())
 );
+```
 
+### Criação da tabela `registro`
+```sql
 CREATE TABLE registro (
   id_registro        INT             IDENTITY	 PRIMARY KEY,
   numero_registro    INT,
   id_personagem      INT             UNIQUE,
   FOREIGN KEY (id_personagem) REFERENCES personagem(id_personagem)
 );
+```
 
+### Criação da tabela `habilidade`
+```sql
 CREATE TABLE habilidade (
   id_habilidade      INT             IDENTITY    PRIMARY KEY,
   nome               VARCHAR(40),
   tipo               VARCHAR(20),
   nivel_poder        INT
 );
+```
 
+### Criação da tabela `item`
+```sql
 CREATE TABLE item (
   id_item            INT             IDENTITY    PRIMARY KEY,
   nome               VARCHAR(40),
   tipo               VARCHAR(20),
   efeito             VARCHAR(60)
 );
+```
 
+### Criação da tabela `local`
+```sql
 CREATE TABLE local (
   id_local           INT             IDENTITY    PRIMARY KEY,
   nome               VARCHAR(40),
   tipo               VARCHAR(20),
   descricao          VARCHAR(60)
 );
+```
 
+### Criação da tabela `evento`
+```sql
 CREATE TABLE evento (
   id_evento          INT             IDENTITY    PRIMARY KEY,
   nome               VARCHAR(40),
   data               DATE,
   descricao          VARCHAR(60)
 );
+```
 
+### Criação da tabela `email`
+```sql
 CREATE TABLE email (
   id_email           INT             IDENTITY    PRIMARY KEY,
   id_personagem      INT,
   endereco_email     VARCHAR(255),
   FOREIGN KEY (id_personagem) REFERENCES personagem(id_personagem)
 );
+```
 
+### Criação da tabela `possui`
+```sql
 CREATE TABLE possui (
   id_personagem      INT,
   id_habilidade      INT,
@@ -78,7 +106,10 @@ CREATE TABLE possui (
   FOREIGN KEY (id_personagem) REFERENCES personagem(id_personagem),
   FOREIGN KEY (id_habilidade) REFERENCES habilidade(id_habilidade)
 );
+```
 
+### Criação da tabela `usa`
+```sql
 CREATE TABLE usa (
   id_personagem      INT,
   id_item            INT,
@@ -86,7 +117,10 @@ CREATE TABLE usa (
   FOREIGN KEY (id_personagem) REFERENCES personagem(id_personagem),
   FOREIGN KEY (id_item) REFERENCES item(id_item)
 );
+```
 
+### Criação da tabela `esteve`
+```sql
 CREATE TABLE esteve (
   id_personagem      INT,
   id_local           INT,
@@ -94,7 +128,10 @@ CREATE TABLE esteve (
   FOREIGN KEY (id_personagem) REFERENCES personagem(id_personagem),
   FOREIGN KEY (id_local) REFERENCES local(id_local)
 );
+```
 
+### Criação da tabela `participa`
+```sql
 CREATE TABLE participa (
   id_personagem      INT,
   id_evento          INT,
@@ -105,243 +142,425 @@ CREATE TABLE participa (
 ```
 
 # 5 - Inserção de Dados
+### Inserção de dados na tabela `casa`
 ```sql
--- Inserindo dados na tabela Personagem
-INSERT INTO Personagem (id_personagem, nome, data_nascimento, raca) VALUES
-(1, 'Rimuru Tempest', '1720-01-01', 'Slime'),
-(2, 'Shizu', '1995-05-10', 'Humana'),
-(3, 'Benimaru', '1998-02-14', 'Oni'),
-(4, 'Shion', '1997-03-12', 'Oni'),
-(5, 'Gobta', '2001-05-01', 'Goblin'),
-(6, 'Ranga', '2000-06-18', 'Lobo Tempest'),
-(7, 'Souei', '1996-07-21', 'Oni'),
-(8, 'Hakurou', '1945-08-19', 'Oni'),
-(9, 'Milim Nava', '1500-09-01', 'Dragonoid'),
-(10, 'Diablo', '1700-10-10', 'Demônio'),
-(11, 'Geld', '1985-11-25', 'Orc'),
-(12, 'Treyni', '1800-12-15', 'Dryad'),
-(13, 'Garm', '1992-01-17', 'Dwarf'),
-(14, 'Kaijin', '1989-02-28', 'Dwarf'),
-(15, 'Vesta', '1990-03-03', 'Dwarf'),
-(16, 'Rigurd', '1950-04-04', 'Goblin'),
-(17, 'Beretta', '1750-05-05', 'Homúnculo'),
-(18, 'Gabil', '1980-06-06', 'Dragonewt'),
-(19, 'Albis', '1994-07-07', 'Snake'),
-(20, 'Phobio', '1995-08-08', 'Beastman');
+INSERT INTO casa (numero, bairro, rua) VALUES
+(1, 'Bairro A', 'Rua Principal'),
+(2, 'Bairro B', 'Rua Secundária'),
+(3, 'Bairro C', 'Avenida Central'),
+(4, 'Bairro D', 'Avenida dos Sonhos'),
+(5, 'Bairro E', 'Rua da Harmonia'),
+(6, 'Bairro F', 'Avenida das Flores'),
+(7, 'Bairro G', 'Rua da Paz'),
+(8, 'Bairro H', 'Avenida da Liberdade'),
+(9, 'Bairro I', 'Rua do Sol'),
+(10, 'Bairro J', 'Avenida da Esperança'),
+(11, 'Bairro K', 'Rua da Alegria'),
+(12, 'Bairro L', 'Avenida da Amizade'),
+(13, 'Bairro M', 'Rua da Felicidade'),
+(14, 'Bairro N', 'Avenida da Serenidade'),
+(15, 'Bairro O', 'Rua das Estrelas'),
+(16, 'Bairro P', 'Avenida do Amor'),
+(17, 'Bairro Q', 'Rua da Harmonia'),
+(18, 'Bairro R', 'Avenida da Aventura'),
+(19, 'Bairro S', 'Rua do Destino'),
+(20, 'Bairro T', 'Avenida da Magia');
+```
 
--- Inserindo dados na tabela Habilidade
-INSERT INTO Habilidade (id_habilidade, nome, tipo, nivel_poder) VALUES
-(1, 'Predator', 'Ataque', 10),
-(2, 'Great Sage', 'Suporte', 9),
-(3, 'Black Lightning', 'Ataque', 8),
-(4, 'Megiddo', 'Ataque', 10),
-(5, 'Clairvoyance', 'Suporte', 7),
-(6, 'Dragon Power', 'Ataque', 10),
-(7, 'Demon Lord\s Haki', 'Ataque', 9),
-(8, 'Healing', 'Suporte', 6),
-(9, 'Water Blade', 'Ataque', 7),
-(10, 'Shadow Motion', 'Ataque', 8);
+### Inserção de dados na tabela `personagem`
+```sql
+INSERT INTO personagem (nome, data_nascimento, raca, id_casa) VALUES
+('Rimuru Tempest', '1990-01-01', 'Slime', 1),
+('Shion', '1995-03-15', 'Oni', 2),
+('Benimaru', '1992-07-20', 'Kijin', 3),
+('Shuna', '1993-05-10', 'Kijin', 4),
+('Gobta', '2000-11-30', 'Goblin', 5),
+('Milim Nava', '1985-09-25', 'Demon Lord', 6),
+('Souei', '1991-12-05', 'Kijin', 7),
+('Diablo', '1993-02-20', 'Demon', 8),
+('Ranga', '1998-08-10', 'Wolf', 9),
+('Gabiru', '1997-04-18', 'Lizardman', 10),
+('Rigurd', '1988-06-30', 'Dwarf', 11),
+('Treyni', '1990-10-22', 'Dryad', 12),
+('Geld', '1994-11-15', 'Orc', 13),
+('Clayman', '1987-03-07', 'Unknown', 14),
+('Carrera', '1999-01-25', 'Harpy', 15),
+('Grucius', '1996-07-12', 'Ogre', 16),
+('Gabil', '1992-04-05', 'Goblin', 17),
+('Hakurou', '1989-12-20', 'Kijin', 18),
+('Souka', '2002-05-28', 'Elf', 19),
+('Gale Gibson', '1997-08-17', 'Human', 20);
+```
 
--- Inserindo dados na tabela Item
-INSERT INTO Item (id_item, nome, tipo, efeito) VALUES
-(1, 'Potion', 'Cura', 'Recupera HP'),
-(2, 'Magic Sword', 'Ataque', 'Aumenta dano'),
-(3, 'Shield', 'Defesa', 'Aumenta defesa'),
-(4, 'Mana Potion', 'Cura', 'Recupera MP'),
-(5, 'Fire Scroll', 'Ataque', 'Lança uma bola de fogo'),
-(6, 'Ice Amulet', 'Defesa', 'Resiste ao gelo'),
-(7, 'Ring of Strength', 'Ataque', 'Aumenta força'),
-(8, 'Elixir of Life', 'Cura', 'Recupera completamente HP e MP'),
-(9, 'Stealth Cloak', 'Suporte', 'Torna invisível por um tempo'),
-(10, 'Boots of Speed', 'Suporte', 'Aumenta a velocidade de movimento');
+### Inserção de dados na tabela `registro`
+```sql
+INSERT INTO registro (numero_registro, id_personagem) VALUES
+(1001, 1),
+(1002, 2),
+(1003, 3),
+(1004, 4),
+(1005, 5),
+(1006, 6),
+(1007, 7),
+(1008, 8),
+(1009, 9),
+(1010, 10),
+(1011, 11),
+(1012, 12),
+(1013, 13),
+(1014, 14),
+(1015, 15),
+(1016, 16),
+(1017, 17),
+(1018, 18),
+(1019, 19),
+(1020, 20);
+```
 
--- Inserindo dados na tabela Local
-INSERT INTO Local (id_local, nome, tipo, descricao) VALUES
-(1, 'Tempest', 'Cidade', 'Cidade principal dos monstros'),
-(2, 'Floresta Jura', 'Floresta', 'Grande floresta onde Rimuru chegou'),
-(3, 'Dwargon', 'Cidade', 'Cidade dos anões'),
-(4, 'Farmenas', 'Cidade', 'Reino dos humanos'),
-(5, 'Caverna dos Espíritos', 'Caverna', 'Lar dos espíritos elementais'),
-(6, 'Vulcão Magma', 'Vulcão', 'Vulcão ativo onde vivem os Ifrits'),
-(7, 'Lago Azul', 'Lago', 'Lago de águas cristalinas'),
-(8, 'Vale Sombrio', 'Vale', 'Vale onde a luz do sol raramente chega'),
-(9, 'Montanha Nebulosa', 'Montanha', 'Montanha coberta de neblina'),
-(10, 'Ruínas Antigas', 'Ruínas', 'Ruínas de uma antiga civilização');
+### Inserção de dados na tabela `habilidade`
+```sql
+INSERT INTO habilidade (nome, tipo, nivel_poder) VALUES
+('Transformação', 'Ativa', 10),
+('Explosão de Fogo', 'Ativa', 8),
+('Curandeirismo', 'Passiva', 7),
+('Telecinese', 'Ativa', 9),
+('Furtividade', 'Passiva', 2),
+('Voo', 'Ativa', 9),
+('Teletransporte', 'Ativa', 8),
+('Ilusão', 'Ativa', 7),
+('Cura em Massa', 'Ativa', 4),
+('Invisibilidade', 'Ativa', 4),
+('Força Sobrenatural', 'Ativa', 10),
+('Manipulação de Energia', 'Ativa', 9),
+('Aura de Proteção', 'Passiva', 7),
+('Controle Mental', 'Ativa', 8),
+('Evasão', 'Passiva', 6),
+('Regeneração Rápida', 'Passiva', 9),
+('Explosão de Gelo', 'Ativa', 8),
+('Telepatia', 'Ativa', 7),
+('Escudo Mágico', 'Ativa', 2),
+('Rajada de Vento', 'Ativa', 8);
+```
 
--- Inserindo dados na tabela Evento
-INSERT INTO Evento (id_evento, nome, data, descricao) VALUES
-(1, 'Fundação de Tempest', '2020-01-01', 'Fundação da cidade de Tempest'),
-(2, 'Batalha contra Orc Lord', '2020-06-01', 'Grande batalha contra Orc Lord'),
-(3, 'Confronto com Charybdis', '2021-02-15', 'Batalha contra o monstro Charybdis'),
-(4, 'Invasão de Clayman', '2021-07-20', 'Invasão liderada pelo Lorde Demônio Clayman'),
-(5, 'Aliança com Dwargon', '2019-12-01', 'Formação de uma aliança com o reino dos anões'),
-(6, 'Festival de Tempest', '2021-09-10', 'Primeiro festival da cidade de Tempest'),
-(7, 'Encontro com Milim', '2020-03-05', 'Primeiro encontro com a Lorde Demônio Milim Nava'),
-(8, 'Aparição de Veldora', '2022-01-01', 'Libertação do dragão Veldora'),
-(9, 'Conquista de Farmenas', '2021-05-25', 'Conquista do reino de Farmenas'),
-(10, 'Derrota de Hinata', '2021-11-11', 'Batalha e derrota de Hinata Sakaguchi');
+### Inserção de dados na tabela `item`
+```sql
+INSERT INTO item (nome, tipo, efeito) VALUES
+('Espada Longa', 'Arma', 'Aumenta o dano de ataque'),
+('Poção de Cura', 'Consumível', 'Recupera pontos de vida'),
+('Anel de Proteção', 'Acessório', 'Aumenta a defesa'),
+('Arco e Flecha', 'Arma', 'Permite ataques à distância'),
+('Amuleto de Sorte', 'Acessório', 'Aumenta a chance de acerto crítico'),
+('Varinha Mágica', 'Arma', 'Permite lançar feitiços'),
+('Elixir de Força', 'Consumível', 'Aumenta temporariamente a força'),
+('Bracelete da Agilidade', 'Acessório', 'Aumenta a velocidade de movimento'),
+('Talismã de Proteção', 'Acessório', 'Reduz o dano recebido'),
+('Adaga Envenenada', 'Arma', 'Causa dano e envenena o alvo'),
+('Elmo de Resistência', 'Acessório', 'Aumenta a resistência a ataques físicos'),
+('Orbe de Energia', 'Consumível', 'Recupera pontos de mana'),
+('Botas de Fuga', 'Acessório', 'Permite escapar de batalhas'),
+('Luvas da Destreza', 'Acessório', 'Aumenta a precisão dos ataques'),
+('Cajado Arcano', 'Arma', 'Aumenta o poder mágico'),
+('Poção de Invisibilidade', 'Consumível', 'Torna o usuário invisível por um curto período'),
+('Pergaminho de Teleporte', 'Consumível', 'Permite teletransporte para um local conhecido'),
+('Anel de Regeneração', 'Acessório', 'Acelera a regeneração de ferimentos'),
+('Manto da Camuflagem', 'Acessório', 'Permite camuflagem natural em ambientes'),
+('Poção de Força', 'Consumível', 'Aumenta temporariamente a força física'),
+('Espelho da Reflexão', 'Acessório', 'Reflete ataques mágicos de volta ao lançador'),
+('Poção de Resistência', 'Consumível', 'Aumenta temporariamente a resistência a status negativos');
+```
 
--- Inserindo dados na tabela Personagem_Habilidade
-INSERT INTO possui(id_personagem, id_habilidade) VALUES
+### Inserção de dados na tabela `local`
+```sql
+INSERT INTO local (nome, tipo, descricao) VALUES
+('Floresta das Fadas', 'Área Natural', 'Lar das fadas e criaturas mágicas'),
+('Cidade dos Goblins', 'Área Urbana', 'Centro de comércio goblin'),
+('Montanha Flamejante', 'Área Natural', 'Reino do dragão de fogo'),
+('Vila dos Humanos', 'Área Urbana', 'Comunidade pacífica de humanos'),
+('Torre do Feiticeiro', 'Área Mística', 'Local de aprendizado de magia arcana'),
+('Planície dos Elfos', 'Área Natural', 'Habitat dos elfos e seres da floresta'),
+('Caverna dos Trolls', 'Área Natural', 'Terra natal dos trolls e criaturas subterrâneas'),
+('Ilha dos Piratas', 'Área Costeira', 'Esconderijo de piratas e saqueadores'),
+('Castelo dos Reis', 'Área Urbana', 'Residência dos reis e nobres'),
+('Templo dos Deuses', 'Área Sagrada', 'Local de adoração e rituais religiosos'),
+('Deserto dos Escaravelhos', 'Área Natural', 'Região desértica habitada por insetos gigantes'),
+('Cidade dos Anões', 'Área Urbana', 'Centro de mineração e forja anã'),
+('Pântano dos Espíritos', 'Área Natural', 'Lar de espíritos e criaturas místicas'),
+('Colina dos Gigantes', 'Área Natural', 'Território dos gigantes e titãs'),
+('Porto dos Mercadores', 'Área Costeira', 'Local de comércio e trocas marítimas'),
+('Vale das Sombras', 'Área Natural', 'Região assombrada por espíritos malignos'),
+('Cidade dos Magos', 'Área Urbana', 'Academia de magia e estudos arcanos'),
+('Cachoeira dos Ninfas', 'Área Natural', 'Refúgio das ninfas e seres aquáticos'),
+('Aldeia dos Lobisomens', 'Área Natural', 'Comunidade de lobisomens e metamorfos'),
+('Ruínas Antigas', 'Área Histórica', 'Vestígios de civilizações antigas e relíquias');
+```
+
+### Inserção de dados na tabela `evento`
+```sql
+INSERT INTO evento (nome, data, descricao) VALUES
+('Festival Anual', '2024-07-15', 'Celebrando a paz entre as raças'),
+('Invasão Demoníaca', '2024-09-20', 'Hordas de demônios atacam a cidade'),
+('Torneio de Arquearia', '2024-08-10', 'Competição de habilidades com arco e flecha'),
+('Concerto da Sinfonia Mágica', '2024-06-25', 'Apresentação de música mágica'),
+('Ritual da Primavera', '2024-04-05', 'Cerimônia para trazer prosperidade à terra'),
+('Baile Real', '2024-10-30', 'Evento de gala com a realeza'),
+('Expedição à Montanha', '2024-05-12', 'Jornada para explorar a Montanha Flamejante'),
+('Caçada ao Tesouro', '2024-11-08', 'Busca por tesouros escondidos em toda a região'),
+('Cerimônia de Iniciação', '2024-02-18', 'Ritual para novos membros da guilda'),
+('Desfile de Moda', '2024-09-05', 'Apresentação das últimas tendências de moda'),
+('Festival das Luzes', '2024-12-20', 'Celebração com lanternas e fogos de artifício'),
+('Torneio de Combate', '2024-03-10', 'Competição de artes marciais e combate'),
+('Exposição de Arte', '2024-08-28', 'Mostra de obras de artistas locais'),
+('Leilão de Relíquias', '2024-07-02', 'Venda de itens históricos e mágicos'),
+('Concurso de Talentos', '2024-11-15', 'Apresentações variadas de habilidades e talentos'),
+('Desafio dos Campeões', '2024-06-10', 'Batalha entre os melhores guerreiros da região'),
+('Feira de Artesanato', '2024-04-20', 'Venda de produtos artesanais e feitos à mão'),
+('Competição de Cavalos', '2024-10-05', 'Corrida de cavalos e exibição de habilidades equestres'),
+('Banquete Real', '2024-12-12', 'Banquete em honra aos heróis da cidade'),
+('Festa da Colheita', '2024-09-18', 'Celebrando a abundância da colheita');
+```
+
+### Inserção de dados na tabela `email`
+```sql
+INSERT INTO email (id_personagem, endereco_email) VALUES
+(1, 'rimuru@tempest.com'),
+(1, 'slime@slime.com'),
+(2, 'shion@oni.com'),
+(2, 'shionofficial@tempest.com'),
+(3, 'benimaru@kijin.com'),
+(3, 'beni@tempest.com'),
+(4, 'shuna@kijin.com'),
+(4, 'shuna@tempest.com'),
+(5, 'gobta@goblin.com'),
+(5, 'gobta@tempest.com'),
+(6, 'milim@demons.com'),
+(6, 'milim@nava.com'),
+(7, 'souei@kijin.com'),
+(7, 'souei@tempest.com'),
+(8, 'diablo@demon.com'),
+(8, 'diablo@tempest.com'),
+(9, 'ranga@wolf.com'),
+(9, 'ranga@tempest.com'),
+(10, 'gabiru@lizardman.com'),
+(10, 'gabiru@tempest.com'),
+(11, 'rigurd@dwarf.com'),
+(11, 'rigurd@tempest.com'),
+(12, 'treyni@dryad.com'),
+(12, 'treyni@tempest.com'),
+(13, 'geld@orc.com'),
+(13, 'geld@tempest.com'),
+(14, 'clayman@unknown.com'),
+(14, 'clayman@tempest.com'),
+(15, 'carrera@harpy.com'),
+(15, 'carrera@tempest.com'),
+(16, 'grucius@ogre.com'),
+(16, 'grucius@tempest.com'),
+(17, 'gabil@goblin.com'),
+(17, 'gabil@tempest.com'),
+(18, 'hakurou@kijin.com'),
+(18, 'hakurou@tempest.com'),
+(19, 'souka@elf.com'),
+(19, 'souka@tempest.com'),
+(20, 'gale@human.com'),
+(20, 'gale@tempest.com');
+```
+
+### Inserção de dados na tabela `possui`
+```sql
+INSERT INTO possui (id_personagem, id_habilidade) VALUES
 (1, 1),
 (1, 2),
+(1, 3),
 (2, 2),
+(2, 3),
+(3, 1),
+(3, 2),
 (3, 3),
-(4, 4),
-(5, 5),
-(6, 6),
-(7, 7),
-(8, 8),
-(9, 6),
-(10, 7),
-(11, 9),
-(12, 10),
-(13, 9),
-(14, 10),
-(15, 8),
-(16, 5),
+(4, 1),
+(4, 2),
+(4, 3),
+(5, 1),
+(5, 2),
+(5, 3),
+(6, 1),
+(6, 2),
+(6, 3),
+(7, 1),
+(7, 2),
+(7, 3),
+(8, 1),
+(8, 2),
+(8, 3),
+(9, 1),
+(9, 2),
+(9, 3),
+(10, 1),
+(10, 2),
+(10, 3),
+(11, 1),
+(11, 2),
+(11, 3),
+(12, 1),
+(12, 2),
+(12, 3),
+(13, 1),
+(13, 2),
+(13, 3),
+(14, 1),
+(14, 2),
+(14, 3),
+(15, 1),
+(15, 2),
+(15, 3),
+(16, 1),
+(16, 2),
+(16, 3),
+(17, 1),
+(17, 2),
 (17, 3),
-(18, 4),
+(18, 1),
+(18, 2),
+(18, 3),
+(19, 1),
 (19, 2),
-(20, 1);
+(19, 3),
+(20, 1),
+(20, 2),
+(20, 3);
+```
 
--- Inserindo dados na tabela Personagem_Item
+### Inserção de dados na tabela `usa`
+```sql
 INSERT INTO usa (id_personagem, id_item) VALUES
 (1, 1),
 (1, 2),
 (2, 1),
+(2, 2),
 (3, 3),
-(4, 4),
-(5, 5),
-(6, 6),
-(7, 7),
-(8, 8),
-(9, 9),
-(10, 10),
-(11, 1),
+(3, 4),
+(4, 5),
+(4, 6),
+(5, 7),
+(5, 8),
+(6, 9),
+(6, 10),
+(7, 1),
+(7, 2),
+(8, 3),
+(8, 4),
+(9, 5),
+(9, 6),
+(10, 7),
+(10, 8),
+(11, 9),
+(11, 10),
+(12, 1),
 (12, 2),
 (13, 3),
-(14, 4),
-(15, 5),
-(16, 6),
-(17, 7),
-(18, 8),
-(19, 9),
-(20, 10);
+(13, 4),
+(14, 5),
+(14, 6),
+(15, 7),
+(15, 8),
+(16, 9),
+(16, 10),
+(17, 1),
+(17, 2),
+(18, 3),
+(18, 4),
+(19, 5),
+(19, 6),
+(20, 7),
+(20, 8);
+```
 
--- Inserindo dados na tabela Personagem_Local
+### Inserção de dados na tabela `esteve`
+```sql
 INSERT INTO esteve (id_personagem, id_local) VALUES
 (1, 1),
 (1, 2),
 (2, 2),
-(3, 3),
-(4, 4),
-(5, 5),
-(6, 6),
-(7, 7),
-(8, 8),
-(9, 9),
-(10, 10),
+(2, 3),
+(3, 4),
+(3, 5),
+(4, 6),
+(4, 7),
+(5, 8),
+(5, 9),
+(6, 10),
+(6, 11),
+(7, 12),
+(7, 13),
+(8, 14),
+(8, 15),
+(9, 16),
+(9, 17),
+(10, 18),
+(10, 19),
 (11, 1),
-(12, 2),
-(13, 3),
-(14, 4),
-(15, 5),
-(16, 6),
-(17, 7),
-(18, 8),
-(19, 9),
-(20, 10);
+(11, 2),
+(12, 3),
+(12, 4),
+(13, 5),
+(13, 6),
+(14, 7),
+(14, 8),
+(15, 9),
+(15, 10),
+(16, 11),
+(16, 12),
+(17, 13),
+(17, 14),
+(18, 15),
+(18, 16),
+(19, 17),
+(19, 18),
+(20, 19),
+(20, 20);
+```
 
--- Inserindo dados na tabela Personagem_Evento
+### Inserção de dados na tabela `partivipa`
+```sql
 INSERT INTO participa (id_personagem, id_evento) VALUES
 (1, 1),
 (1, 2),
 (2, 2),
-(3, 3),
-(4, 4),
-(5, 5),
-(6, 6),
-(7, 7),
-(8, 8),
-(9, 9),
-(10, 10),
+(2, 3),
+(3, 4),
+(3, 5),
+(4, 6),
+(4, 7),
+(5, 8),
+(5, 9),
+(6, 10),
+(6, 11),
+(7, 12),
+(7, 13),
+(8, 14),
+(8, 15),
+(9, 16),
+(9, 17),
+(10, 18),
+(10, 19),
 (11, 1),
-(12, 2),
-(13, 3),
-(14, 4),
-(15, 5),
-(16, 6),
-(17, 7),
-(18, 8),
-(19, 9),
-(20, 10);
-
--- Inserindo e-mails na tabela Email
-INSERT INTO email (id_personagem, endereco_email) VALUES
-(1, 'rimuru.tempest@example.com'),
-(1, 'rimuru.tempest@tempestcity.com'),
-(2, 'shizu@example.com'),
-(2, 'shizu@florestajura.com'),
-(3, 'benimaru@example.com'),
-(3, 'benimaru@oni.com'),
-(4, 'shion@example.com'),
-(4, 'shion@oni.com'),
-(5, 'gobta@example.com'),
-(5, 'gobta@goblin.com'),
-(6, 'ranga@example.com'),
-(6, 'ranga@lobotempest.com'),
-(7, 'souei@example.com'),
-(7, 'souei@oni.com'),
-(8, 'hakurou@example.com'),
-(8, 'hakurou@oni.com'),
-(9, 'milim.nava@example.com'),
-(9, 'milim.nava@dragonoid.com'),
-(10, 'diablo@example.com'),
-(10, 'diablo@demon.com'),
-(11, 'geld@example.com'),
-(11, 'geld@orc.com'),
-(12, 'treyni@example.com'),
-(12, 'treyni@dryad.com'),
-(13, 'garm@example.com'),
-(13, 'garm@dwarf.com'),
-(14, 'kaijin@example.com'),
-(14, 'kaijin@dwarf.com'),
-(15, 'vesta@example.com'),
-(15, 'vesta@dwarf.com'),
-(16, 'rigurd@example.com'),
-(16, 'rigurd@goblin.com'),
-(17, 'beretta@example.com'),
-(17, 'beretta@homunculo.com'),
-(18, 'gabil@example.com'),
-(18, 'gabil@dragonewt.com'),
-(19, 'albis@example.com'),
-(19, 'albis@snake.com'),
-(20, 'phobio@example.com'),
-(20, 'phobio@beastman.com');
-
--- Outra rodada de e-mails
-INSERT INTO email (id_personagem, endereco_email) VALUES
-(1, 'rimuru.alt@example.com'),
-(2, 'shizu.alt@example.com'),
-(3, 'benimaru.alt@example.com'),
-(4, 'shion.alt@example.com'),
-(5, 'gobta.alt@example.com'),
-(6, 'ranga.alt@example.com'),
-(7, 'souei.alt@example.com'),
-(8, 'hakurou.alt@example.com'),
-(9, 'milim.nava.alt@example.com'),
-(10, 'diablo.alt@example.com'),
-(11, 'geld.alt@example.com'),
-(12, 'treyni.alt@example.com'),
-(13, 'garm.alt@example.com'),
-(14, 'kaijin.alt@example.com'),
-(15, 'vesta.alt@example.com'),
-(16, 'rigurd.alt@example.com'),
-(17, 'beretta.alt@example.com'),
-(18, 'gabil.alt@example.com'),
-(19, 'albis.alt@example.com'),
-(20, 'phobio.alt@example.com');
+(11, 2),
+(12, 3),
+(12, 4),
+(13, 5),
+(13, 6),
+(14, 7),
+(14, 8),
+(15, 9),
+(15, 10),
+(16, 11),
+(16, 12),
+(17, 13),
+(17, 14),
+(18, 15),
+(18, 16),
+(19, 17),
+(19, 18),
+(20, 19),
+(20, 20);
 ```
 
 # 6 - CRUD
