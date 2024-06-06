@@ -564,60 +564,42 @@ INSERT INTO participa (id_personagem, id_evento) VALUES
 ```
 
 # 6 - CRUD
-### 1. Inserção de Dados
+### Leitura de dados de todos os personagens:
+```sql
+SELECT * FROM personagem
+```
+<img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+
 ### Inserir um novo personagem:
-
 ```sql
-INSERT INTO personagem (nome, data_nascimento, raca) VALUES
-('Gobuta', '2000-01-01', 'Lobo');
+INSERT INTO personagem (nome, data_nascimento, raca, id_casa) 
+VALUES ('Teste', '2000-01-01', 'Humano', 1);
 ```
 
-### Inserir uma nova habilidade:
-```sql
-INSERT INTO habilidade (nome, tipo, nivel_poder) VALUES
-('Gula', 'Defesa', 5);
-```
-
-### Inserir um novo item:
-```sql
-INSERT INTO item (nome, tipo, efeito) VALUES
-('Espada do Heroi', 'Ataque', 'Ao acertar um atk a ambos no duelo morrem');
-```
-
-### 2. Leitura de Dados Inserção
-### Selecionar todos os personagens:
+### Leitura de dados de todos os personagens depois da incerção:
 ```sql
 SELECT * FROM personagem
-SELECT * FROM habilidade
-SELECT * FROM item
 ```
 <img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
 
-### 3. Atualização de Dados
-### Atualizar a raça de um personagem:
+### Atualizar o nome do personagem 'Teste' para 'Novo Teste'
 ```sql
-UPDATE personagem
-SET raca = 'Goblin'
-WHERE nome = 'Gobuta';
+UPDATE personagem SET nome = 'Novo Teste' WHERE nome = 'Teste';
 ```
 
-### 4. Leitura de Dados Atualização
-### Selecionar todos os personagens:
+### Leitura de dados da atualização
 ```sql
 SELECT * FROM personagem
-WHERE nome = 'Gobuta';
+WHERE nome = 'Novo Teste';
 ```
 <img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
 
-### 5. Deleção de Dados
 ### Excluir um personagem:
 ```sql
-DELETE FROM personagem
-WHERE nome = 'Gobuta';
+DELETE FROM personagem WHERE nome = 'Novo Teste';
 ```
 
-### 6. Leitura de Dados Deleção
-### Selecionar todos os personagens:
+### Leitura de dados de todos os personagens após a exclusão
 ```sql
 SELECT * FROM personagem;
 ```
@@ -634,6 +616,7 @@ FROM personagem p
 JOIN possui ph ON p.id_personagem = ph.id_personagem
 JOIN habilidade h ON ph.id_habilidade = h.id_habilidade;
 ```
+<img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
 
 ### 2. Consulta com Filtro em Personagem e Item
 Descrição: Esta consulta retorna todos os personagens que possuem itens do tipo 'Ataque'.
