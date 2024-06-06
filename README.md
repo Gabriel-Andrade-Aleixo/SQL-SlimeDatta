@@ -607,101 +607,86 @@ SELECT * FROM personagem;
 
 
 ## 7 - Relatórios
-
 ### 1. Consulta com Junção entre Personagem e Habilidade
-Descrição: Esta consulta retorna todos os personagens junto com suas habilidades correspondentes.
 ```sql
-SELECT p.nome AS Personagem, h.nome AS Habilidade
-FROM personagem p
-JOIN possui ph ON p.id_personagem = ph.id_personagem
-JOIN habilidade h ON ph.id_habilidade = h.id_habilidade;
-```
-<img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
 
-### 2. Consulta com Filtro em Personagem e Item
-Descrição: Esta consulta retorna todos os personagens que possuem itens do tipo 'Ataque'.
-```sql
-SELECT p.nome AS Personagem, i.nome AS Item
-FROM personagem p
-JOIN usa pi ON p.id_personagem = pi.id_personagem
-JOIN item i ON pi.id_item = i.id_item
-WHERE i.tipo = 'Ataque';
 ```
 <img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+Explicação: Esta consulta retorna uma lista de personagens e suas respectivas habilidades. Ela junta as tabelas personagem, possui (que liga personagens a habilidades), e habilidade.
+
+### 2. Mostrar os itens utilizados por cada personagem:
+```sql
+
+```
+<img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+Explicação: Esta consulta exibe os itens que cada personagem utiliza. As tabelas personagem, usa (que liga personagens a itens), e item são unidas para obter essas informações.
 
 ### 3. Consulta com Ordenação em Personagem e Evento
-Descrição: Esta consulta retorna todos os eventos e os personagens que participaram, ordenados pela data do evento.
 ```sql
-SELECT e.nome AS Evento, p.nome AS Personagem
-FROM evento e
-JOIN participa pe ON e.id_evento = pe.id_evento
-JOIN personagem p ON pe.id_personagem = p.id_personagem
-ORDER BY e.data;
+
 ```
 <img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+Explicação: Esta consulta lista os personagens e os eventos nos quais participam, ordenados pela data dos eventos. Tabelas personagem, participa (que liga personagens a eventos), e evento são unidas para esse propósito. O ORDER BY e.data ordena os resultados pela data do evento.
 
 ### 4. Consulta de Personagem com Mais de Uma Habilidade
-Descrição: Esta consulta retorna os personagens que possuem mais de uma habilidade.
 ```sql
-SELECT p.nome AS Personagem, COUNT(ph.id_habilidade) AS NumeroDeHabilidades
-FROM personagem p
-JOIN possui ph ON p.id_personagem = ph.id_personagem
-GROUP BY p.nome
-HAVING COUNT(ph.id_habilidade) > 1;
+
 ```
 <img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+Explicação: Esta consulta retorna personagens que possuem mais de uma habilidade. Utiliza GROUP BY para agrupar personagens e HAVING COUNT(ph.id_habilidade) > 1 para filtrar apenas aqueles com mais de uma habilidade.
 
 ### 5. Consulta de Personagens com Data de Nascimento Filtrada
-Descrição: Esta consulta retorna os personagens que nasceram antes do ano 1900.
 ```sql
-SELECT nome, data_nascimento
-FROM personagem
-WHERE data_nascimento < '1900-01-01';
+
 ```
 <img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+Explicação: Esta consulta lista os personagens que nasceram antes de 1º de janeiro de 1900.
 
 ### 6. Consulta de Habilidades com Nível de Poder Maior que 4
-Descrição: Esta consulta retorna habilidades cujo nível de poder é maior que 4.
 ```sql
-SELECT nome, tipo, nivel_poder
-FROM habilidade
-WHERE nivel_poder > 4;
+
 ```
 <img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+Explicação: Esta consulta retorna habilidades cujo nível de poder é maior que 4.
 
 ### 7. Consulta de Itens com Tipo Específico
-Descrição: Esta consulta retorna itens do tipo 'Cura'.
 ```sql
-SELECT nome, tipo, efeito
-FROM item
-WHERE tipo = 'Cura';
+
 ```
 <img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+Explicação: Esta consulta exibe itens cujo tipo é "Cura".
 
 ### 8. Consulta de Personagem e Locais Visitados
-Descrição: Esta consulta retorna todos os locais visitados por cada personagem.
 ```sql
-SELECT l.nome AS Local, p.nome AS Personagem
-FROM local l
-JOIN esteve pl ON l.id_local = pl.id_local
-JOIN personagem p ON pl.id_personagem = p.id_personagem;
+
 ```
 <img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+Explicação: Esta consulta lista os locais visitados por personagens, unindo as tabelas local, esteve (que liga personagens a locais), e personagem.
 
 ### 9. Consulta de Eventos em um Intervalo de Data
-Descrição: Esta consulta retorna eventos que ocorreram entre 2020 e 2021.
 ```sql
-SELECT nome, data, descricao
-FROM evento
-WHERE data BETWEEN '2020-01-01' AND '2021-12-31';
+
 ```
 <img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+Explicação: Esta consulta retorna eventos que ocorrem entre 1º de janeiro de 2020 e 31 de dezembro de 2021.
 
 ### 10. Consulta de E-mails Associados a Personagens
-Descrição: Esta consulta retorna todos os personagens e seus e-mails associados.
 ```sql
-SELECT p.nome AS Personagem, e.endereco_email AS Email
-FROM personagem p
-JOIN email e ON p.id_personagem = e.id_personagem;
+
 ```
 <img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+Explicação: Esta consulta exibe os endereços de e-mail associados aos personagens.
+
+### 11. Mostrar os personagens que vivem em uma determinada casa
+```sql
+
+```
+<img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+Explicação: Esta consulta lista os personagens que vivem na casa de número 1, unindo as tabelas personagem e casa.
+
+### 12. Mostrar os personagens que possuem um certo tipo de habilidade em um determinado bairro
+```sql
+
+```
+<img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
+Explicação: Esta consulta lista personagens que possuem habilidades do tipo "Passiva" e que residem no "Bairro A". Unem-se as tabelas personagem, possui, habilidade e casa para obter as informações.
