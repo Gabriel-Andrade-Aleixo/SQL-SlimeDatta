@@ -1,16 +1,6 @@
 # 1 - Cenário
 
-No universo de "Slime Datta Ken", é necessário um sistema de banco de dados para gerenciar as diversas entidades e suas relações. O sistema visa organizar informações sobre os personagens, habilidades, itens, locais e eventos, fundamentais para a administração do mundo em que vivem. As entidades principais são:
-
-Personagem: representa cada ser vivo, contendo atributos como nome, idade, raça e habilidades.
-
-Habilidade: habilidades ou poderes que um personagem pode possuir, incluindo nome, tipo e nível de poder.
-
-Item: objetos que os personagens podem usar, com atributos como nome, tipo e efeito.
-
-Local: locais dentro do universo, como cidades, florestas e masmorras, com atributos como nome, tipo e descrição.
-
-Evento: eventos importantes que ocorrem no universo, com atributos como nome, data e descrição.
+ O sistema de banco de dados para "Slime Datta Ken" gerencia entidades como casas (id_casa - número, bairro, rua), personagens (id_personagem - nome, data de nascimento, raça, idade), habilidades (id_habilidade - nome, tipo, nível de poder), itens (id_item - nome, tipo, efeito), locais (id_local - nome, tipo, descrição), eventos (id_evento - nome, data, descrição) e e-mails (id_email - endereço de e-mail). Cada entidade possui atributos específicos, como número e localização para casas, nome e raça para personagens, e nome e efeito para itens. Relacionamentos são estabelecidos, como a residência de um personagem em uma casa, a posse de habilidades e itens por parte dos personagens, e a participação em eventos. Essa estrutura permite um acompanhamento detalhado das interações entre os elementos do universo de "Slime Datta Ken", garantindo uma experiência coesa e imersiva para os usuários.
 
 # 2 - Modelagem Conceitual
 <img src="./imagens/ConceitualSlimeDatta.png" width="100%" />
@@ -23,12 +13,27 @@ Evento: eventos importantes que ocorrem no universo, com atributos como nome, da
 CREATE DATABASE SlimeDatta;
 USE SlimeDatta;
 
+CREATE TABLE casa (
+  id_casa            INT             IDENTITY	 PRIMARY KEY,
+  numero             INT			 NOT NULL,
+  bairro             VARCHAR(40),
+  rua                VARCHAR(60)
+);
+
 CREATE TABLE personagem (
   id_personagem      INT             IDENTITY    PRIMARY KEY,
   nome               VARCHAR(100),
   data_nascimento    DATE,
   raca               VARCHAR(100),
+  id_casa            INT			 FOREIGN KEY REFERENCES casa(id_casa),
   idade              AS DATEDIFF(YEAR, data_nascimento, GETDATE())
+);
+
+CREATE TABLE registro (
+  id_registro        INT             IDENTITY	 PRIMARY KEY,
+  numero_registro    INT,
+  id_personagem      INT             UNIQUE,
+  FOREIGN KEY (id_personagem) REFERENCES personagem(id_personagem)
 );
 
 CREATE TABLE habilidade (
