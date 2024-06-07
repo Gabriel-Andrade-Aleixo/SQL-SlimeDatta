@@ -615,7 +615,7 @@ JOIN possui po ON p.id_personagem = po.id_personagem
 JOIN habilidade h ON po.id_habilidade = h.id_habilidade;
 ```
 <img src="./imagens/c1.jpeg"/>
-<img src="./imagens/c1.jpeg-1"/>
+<img src="./imagens/c1-1.jpeg"/>
 Explicação: Esta consulta retorna uma lista de personagens e suas respectivas habilidades. Ela junta as tabelas personagem, possui (que liga personagens a habilidades), e habilidade.
 
 ### 2. Mostrar os itens utilizados por cada personagem:
