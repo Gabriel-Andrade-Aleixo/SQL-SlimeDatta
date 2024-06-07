@@ -568,7 +568,7 @@ INSERT INTO participa (id_personagem, id_evento) VALUES
 ```sql
 SELECT * FROM personagem
 ```
-<img src="./imagens/.jpeg"/>
+<img src="./imagens/Cr1.jpeg"/>
 
 ### Inserir um novo personagem:
 ```sql
@@ -580,7 +580,7 @@ VALUES ('Teste', '2000-01-01', 'Humano', 1);
 ```sql
 SELECT * FROM personagem
 ```
-<img src="./imagens/.jpeg"/>
+<img src="./imagens/Cr2.jpeg"/>
 
 ### Atualizar o nome do personagem 'Teste' para 'Novo Teste'
 ```sql
@@ -592,7 +592,7 @@ UPDATE personagem SET nome = 'Novo Teste' WHERE nome = 'Teste';
 SELECT * FROM personagem
 WHERE nome = 'Novo Teste';
 ```
-<img src="./imagens/.jpeg"/>
+<img src="./imagens/Cr3.jpeg"/>
 
 ### Excluir um personagem:
 ```sql
@@ -603,7 +603,7 @@ DELETE FROM personagem WHERE nome = 'Novo Teste';
 ```sql
 SELECT * FROM personagem;
 ```
-<img src="./imagens/.jpeg"/>
+<img src="./imagens/Cr4.jpeg"/>
 
 
 ## 7 - Relatórios
@@ -614,8 +614,8 @@ FROM personagem p
 JOIN possui po ON p.id_personagem = po.id_personagem
 JOIN habilidade h ON po.id_habilidade = h.id_habilidade;
 ```
-<img src="./imagens/.jpeg"/>
-<img src="./imagens/.jpeg-1"/>
+<img src="./imagens/c1.jpeg"/>
+<img src="./imagens/c1.jpeg-1"/>
 Explicação: Esta consulta retorna uma lista de personagens e suas respectivas habilidades. Ela junta as tabelas personagem, possui (que liga personagens a habilidades), e habilidade.
 
 ### 2. Mostrar os itens utilizados por cada personagem:
@@ -625,7 +625,7 @@ FROM personagem p
 JOIN usa u ON p.id_personagem = u.id_personagem
 JOIN item i ON u.id_item = i.id_item;
 ```
-<img src="./imagens/.jpeg"/>
+<img src="./imagens/c2.jpeg"/>
 Explicação: Esta consulta exibe os itens que cada personagem utiliza. As tabelas personagem, usa (que liga personagens a itens), e item são unidas para obter essas informações.
 
 ### 3. Consulta com Ordenação em Personagem e Evento
@@ -636,7 +636,7 @@ JOIN participa pa ON p.id_personagem = pa.id_personagem
 JOIN evento e ON pa.id_evento = e.id_evento
 ORDER BY e.data;
 ```
-<img src="./imagens/.jpeg"/>
+<img src="./imagens/c3.jpeg"/>
 Explicação: Esta consulta lista os personagens e os eventos nos quais participam, ordenados pela data dos eventos. Tabelas personagem, participa (que liga personagens a eventos), e evento são unidas para esse propósito. O ORDER BY e.data ordena os resultados pela data do evento.
 
 ### 4. Consulta de Personagem com Mais de Uma Habilidade
@@ -647,7 +647,7 @@ JOIN possui ph ON p.id_personagem = ph.id_personagem
 GROUP BY p.nome
 HAVING COUNT(ph.id_habilidade) > 1;
 ```
-<img src="./imagens/.jpeg"/>
+<img src="./imagens/c4.jpeg"/>
 Explicação: Esta consulta retorna personagens que possuem mais de uma habilidade. Utiliza GROUP BY para agrupar personagens e HAVING COUNT(ph.id_habilidade) > 1 para filtrar apenas aqueles com mais de uma habilidade.
 
 ### 5. Consulta de Personagens com Data de Nascimento Filtrada
@@ -656,7 +656,7 @@ SELECT nome, data_nascimento
 FROM personagem
 WHERE data_nascimento > '1993-01-01';
 ```
-<img src="./imagens/.jpeg"/>
+<img src="./imagens/c5.jpeg"/>
 Explicação: Esta consulta lista os personagens que nasceram antes de 1º de janeiro de 1993.
 
 ### 6. Consulta de Habilidades com Nível de Poder Maior que 4
@@ -665,7 +665,7 @@ SELECT nome, tipo, nivel_poder
 FROM habilidade
 WHERE nivel_poder > 4;
 ```
-<img src="./imagens/.jpeg"/>
+<img src="./imagens/c6.jpeg"/>
 Explicação: Esta consulta retorna habilidades cujo nível de poder é maior que 4.
 
 ### 7. Consulta de Itens com Tipo Específico
@@ -674,7 +674,7 @@ SELECT nome, tipo, efeito
 FROM item
 WHERE tipo = 'Arma';
 ```
-<img src="./imagens/.jpeg"/>
+<img src="./imagens/c7.jpeg"/>
 Explicação: Esta consulta exibe itens cujo tipo é "Arma".
 
 ### 8. Consulta de Personagem e Locais Visitados
@@ -684,7 +684,7 @@ FROM local l
 JOIN esteve pl ON l.id_local = pl.id_local
 JOIN personagem p ON pl.id_personagem = p.id_personagem;
 ```
-<img src="./imagens/.jpeg"/>
+<img src="./imagens/c8.jpeg"/>
 Explicação: Esta consulta lista os locais visitados por personagens, unindo as tabelas local, esteve (que liga personagens a locais), e personagem.
 
 ### 9. Consulta de Eventos em um Intervalo de Data
@@ -693,7 +693,7 @@ SELECT nome, data, descricao
 FROM evento
 WHERE data BETWEEN '2024-08-01' AND '2025-12-31';
 ```
-<img src="./imagens/.jpeg"/>
+<img src="./imagens/c9.jpeg"/>
 Explicação: Esta consulta retorna eventos que ocorrem entre 1º de agosto de 2024 e 31 de dezembro de 2025.
 
 ### 10. Consulta de E-mails Associados a Personagens
@@ -702,7 +702,7 @@ SELECT p.nome AS Personagem, e.endereco_email AS Email
 FROM personagem p
 JOIN email e ON p.id_personagem = e.id_personagem;
 ```
-<img src="./imagens/.jpeg"/>
+<img src="./imagens/c10.jpeg"/>
 Explicação: Esta consulta exibe os endereços de e-mail associados aos personagens.
 
 ### 11. Mostrar os personagens que vivem em uma determinada casa
@@ -712,7 +712,7 @@ FROM personagem p
 JOIN casa c ON p.id_casa = c.id_casa
 WHERE c.numero = 1;
 ```
-<img src="./imagens/.jpeg"/>
+<img src="./imagens/c11.jpeg"/>
 Explicação: Esta consulta lista os personagens que vivem na casa de número 1, unindo as tabelas personagem e casa.
 
 ### 12. Mostrar os personagens que possuem um certo tipo de habilidade em um determinado bairro
@@ -724,6 +724,5 @@ JOIN habilidade h ON po.id_habilidade = h.id_habilidade
 JOIN casa c ON p.id_casa = c.id_casa
 WHERE h.tipo = 'Passiva' AND c.bairro = 'Bairro A';
 ```
-<img src="./imagens/.jpeg"/>
+<img src="./imagens/c12.jpeg"/>
 Explicação: Esta consulta lista personagens que possuem habilidades do tipo "Passiva" e que residem no "Bairro A". Unem-se as tabelas personagem, possui, habilidade e casa para obter as informações.
-
